@@ -178,7 +178,7 @@ elif section == "What I Have Done":
         st.markdown(f"**{i}.** {task}")
 
     st.markdown("### Demo Video — Phase 1")
-    st.video("videos/phase1_demo.mp4")
+    st.video("report/videos/phase1_demo.mp4")
     st.caption(
         "Initial stage of the project: early system exploration, local execution, and first frontend LASSO implementation."
     )
@@ -216,7 +216,7 @@ elif section == "What I Have Done":
         st.markdown(f"**{i}.** {task}")
 
     st.markdown("### Demo Video — Phase 3")
-    st.video("videos/phase3_demo.mp4")
+    st.video("report/videos/phase3_demo.mp4")
     st.caption(
         "Refined workflow: sketch upload, LASSO v2 interaction, add/remove region support, and structured preparation for generation."
     )
