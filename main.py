@@ -1,7 +1,20 @@
 import streamlit as st
 from datetime import date
+from pathlib import Path
 
 st.set_page_config(page_title="Thesis Progress Dashboard", layout="wide")
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def show_video_if_available(relative_path: str, caption: str, missing_message: str):
+    video_path = BASE_DIR / relative_path
+    if video_path.exists() and video_path.is_file():
+        st.video(str(video_path))
+        st.caption(caption)
+    else:
+        st.warning(missing_message)
+
 
 # ---------- Sidebar ----------
 st.sidebar.title("Thesis Progress")
@@ -52,7 +65,7 @@ open_questions = [
 ]
 
 next_steps = [
-   "Improve UI design of front-end part",
+    "Improve UI design of front-end part",
     "Test and Debug",
     "Refactor codes"
 ]
@@ -94,7 +107,7 @@ lasso_steps = [
 
 # ---------- Header ----------
 st.title(project_title)
-st.caption(f"Updated for professor and project team • 30 March 2026")
+st.caption("Updated for professor and project team • 30 March 2026")
 st.divider()
 
 # ---------- Sections ----------
@@ -171,23 +184,24 @@ elif section == "What I Have Done":
         "Reviewed the implementation step-by-step to understand the components and workflow of the system.",
         "Had a meeting with Mattia on 5 March to discuss the project and the current platform.",
         "Was added as a contributor to the Fashion Design AI GitHub repository.",
-        "Implemented the first version of LASSO tool on frontend."
+        "Implemented the first version of the LASSO tool on the frontend."
     ]
 
     for i, task in enumerate(phase1, start=1):
         st.markdown(f"**{i}.** {task}")
 
     st.markdown("### Demo Video — Phase 1")
-    st.video("report/videos/phase1_demo.mp4")
-    st.caption(
-        "Initial stage of the project: early system exploration, local execution, and first frontend LASSO implementation."
+    show_video_if_available(
+        "videos/phase1_demo.mp4",
+        "Initial stage of the project: early system exploration, local execution, and first frontend LASSO implementation.",
+        "Phase 1 demo video is not available in this deployment."
     )
 
     # -------- Phase 2 --------
     st.subheader("Phase 2 — First Week (Integration & Core Implementation)")
 
     phase2 = [
-        "Implemented the LASSO tool on backend.",
+        "Implemented the LASSO tool on the backend.",
         "Connected LOTS to the platform so the platform can send generation requests to the real model instead of the mock implementation.",
         "Added sketch drawing interaction using mouse / trackpad.",
         "Updated the payload structure so the platform can send LASSO information to the generation pipeline.",
@@ -216,9 +230,10 @@ elif section == "What I Have Done":
         st.markdown(f"**{i}.** {task}")
 
     st.markdown("### Demo Video — Phase 3")
-    st.video("report/videos/phase3_demo.mp4")
-    st.caption(
-        "Refined workflow: sketch upload, LASSO v2 interaction, add/remove region support, and structured preparation for generation."
+    show_video_if_available(
+        "videos/phase3_demo.mp4",
+        "Refined workflow: sketch upload, LASSO v2 interaction, add/remove region support, and structured preparation for generation.",
+        "Phase 3 demo video is not available in this deployment."
     )
 
 elif section == "Payload Evolution":
@@ -490,11 +505,14 @@ elif section == "Meeting Notes":
 
         st.markdown("**My implementation:**")
         st.write(
-            "1. Created and continuously updated the Streamlit report to document the system, workflow, and design decisions.")
+            "1. Created and continuously updated the Streamlit report to document the system, workflow, and design decisions."
+        )
         st.write(
-            "2. Tested sketches previously shared by Davide Talon and confirmed that they also produce strong results both on my local machine and on the GPU server.")
+            "2. Tested sketches previously shared by Davide Talon and confirmed that they also produce strong results both on my local machine and on the GPU server."
+        )
         st.write(
-            "3. Designed and implemented a structured system for saving experiments, including sketches, LASSO regions, masks, and associated descriptions after each generation request.")
+            "3. Designed and implemented a structured system for saving experiments, including sketches, LASSO regions, masks, and associated descriptions after each generation request."
+        )
 
         st.success(
             "All requested tasks from this meeting have been implemented and validated in the current workflow."
