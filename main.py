@@ -192,7 +192,7 @@ elif section == "What I Have Done":
 
     st.markdown("### Demo Video — Phase 1")
     show_video_if_available(
-        "videos/phase1_demo.mp4",
+        "videos/phase1_demo.MP4",
         "Initial stage of the project: early system exploration, local execution, and first frontend LASSO implementation.",
         "Phase 1 demo video is not available in this deployment."
     )
