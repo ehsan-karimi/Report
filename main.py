@@ -16,6 +16,22 @@ def show_video_if_available(relative_path: str, caption: str, missing_message: s
         st.warning(missing_message)
 
 
+def show_image_if_available(relative_path: str, caption: str, missing_message: str, use_column_width=True):
+    image_path = BASE_DIR / relative_path
+    if image_path.exists() and image_path.is_file():
+        st.image(str(image_path), caption=caption, use_container_width=use_column_width)
+    else:
+        st.warning(missing_message)
+
+
+def show_experiment_image(relative_path: str, fallback_label: str):
+    image_path = BASE_DIR / relative_path
+    if image_path.exists() and image_path.is_file():
+        st.image(str(image_path), caption=fallback_label, use_container_width=True)
+    else:
+        st.info(f"{fallback_label} not added yet. Put the file at: `{relative_path}`")
+
+
 # ---------- Sidebar ----------
 st.sidebar.title("Thesis Progress")
 st.sidebar.markdown("LOTS + Platform")
@@ -27,6 +43,8 @@ section = st.sidebar.radio(
         "What I Have Done",
         "Payload Evolution",
         "LASSO Implementation Steps",
+        "Experiments",
+        "Block Diagram",
         "Current Understanding",
         "Problems / Open Questions",
         "Next Steps",
@@ -105,6 +123,54 @@ lasso_steps = [
     }
 ]
 
+# Example experiment content
+experiment_global_description = (
+    "A coordinated casual outfit composed of a relaxed short-sleeve top and wide-leg pants, "
+    "with localized control over garment details using either LASSO-selected regions or per-layer descriptions."
+)
+
+layer_based_descriptions = [
+    {
+        "layer_name": "Layer 1 — Shirt",
+        "description": "a relaxed-fit short-sleeve t-shirt with a V-shaped neckline, slightly dropped shoulders, and a softly curved hem"
+    },
+    {
+        "layer_name": "Layer 2 — Inner Neck Layer",
+        "description": "a layered inner neckline detail with a contrasting undershirt visible at the collar, forming a double-layer V-neck effect"
+    },
+    {
+        "layer_name": "Layer 3 — Pants",
+        "description": "a pair of high-waisted, wide-leg pants with a relaxed fit, elastic waistband, and straight full-length legs"
+    },
+]
+
+lasso_based_layers = [
+    {
+        "layer_name": "Layer 1 — Shirt",
+        "layer_description": "a relaxed-fit short-sleeve t-shirt with a V-shaped neckline, slightly dropped shoulders, and a softly curved hem",
+        "regions": [
+            {
+                "region_name": "Region 1 — Neckline",
+                "description": "a layered inner neckline detail with a visible inner collar, creating a double-layer V-neck effect"
+            },
+            {
+                "region_name": "Region 2 — Sleeves",
+                "description": "short sleeves with a relaxed silhouette and soft folded hems"
+            }
+        ]
+    },
+    {
+        "layer_name": "Layer 2 — Pants",
+        "layer_description": "a pair of high-waisted, wide-leg pants with a relaxed fit and straight full-length legs",
+        "regions": [
+            {
+                "region_name": "Region 1 — Waistband",
+                "description": "an elastic waistband with gathered fabric detail"
+            }
+        ]
+    }
+]
+
 # ---------- Header ----------
 st.title(project_title)
 st.caption("Updated for professor and project team • 30 March 2026")
@@ -174,7 +240,6 @@ elif section == "What I Have Done":
         """
     )
 
-    # -------- Phase 1 --------
     st.subheader("Phase 1 — Before First Meeting (Understanding Stage)")
 
     phase1 = [
@@ -197,7 +262,6 @@ elif section == "What I Have Done":
         "Phase 1 demo video is not available in this deployment."
     )
 
-    # -------- Phase 2 --------
     st.subheader("Phase 2 — First Week (Integration & Core Implementation)")
 
     phase2 = [
@@ -213,7 +277,6 @@ elif section == "What I Have Done":
     for i, task in enumerate(phase2, start=1):
         st.markdown(f"**{i}.** {task}")
 
-    # -------- Phase 3 --------
     st.subheader("Phase 3 — Second Week (Refinement, Validation & Design Decisions)")
 
     phase3 = [
@@ -417,6 +480,683 @@ Generation uses local + layer + global conditioning""",
         the system can now receive a precise region-of-interest mask derived directly from the user's free-form input.
 
         Combined with the updated payload, this makes localized conditioning possible in a much cleaner and more explainable way.
+        """
+    )
+
+elif section == "Experiments":
+    st.header("Experiments")
+
+    st.markdown(
+        """
+        This section presents a qualitative comparison across multiple experiments
+        between two conditioning strategies:
+
+        **A. LASSO-based interaction**
+        - Local regions are selected on a full sketch
+        - Each region has a local description
+
+        **B. Layer-based interaction**
+        - The design is decomposed into layers
+        - Each layer has its own description
+
+        Each experiment shows both approaches side by side.
+        """
+    )
+
+    experiments = [
+        "exp1", "exp2", "exp3", "exp4",
+        "exp5", "exp6", "exp7", "exp8"
+    ]
+
+
+    st.divider()
+    st.subheader(f"Experiment: EX1")
+
+    base_path = f"experiments/exp1"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp1 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp1 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: a plain, regular fit, crew-necked top with no waistline")
+        st.write("- Layer: a floral, single-breasted, symmetrical blazer jacket with set-in sleeves, notched lapels and welt pockets")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a floral, single-breasted, symmetrical blazer jacket with set-in sleeves, notched lapels and welt pockets")
+        st.write("- Layer 2: a plain, regular fit, crew-necked top with no waistline")
+
+    st.divider()
+    st.subheader(f"Experiment: EX2")
+
+    base_path = f"experiments/exp2"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp2 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp2 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+    with col3:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay2.png",
+            "LASSO regions 2"
+        )
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: low-waisted, dotted, symmetrical, fly-front, straight pants with curved pockets")
+        st.write("- Region 2: a striped, single-breasted blazer jacket with a regular fit, normal waist, above-the-hip length, notched lapel, welt pockets, and set-in sleeves with wrist-length cuffs")
+        st.write("- Layer: a floral, tight-fitting blouse with a normal waist, single-breasted front, symmetrical design, a flap pocket, a shirt collar and wrist-length sleeves")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: low-waisted, dotted, symmetrical, fly-front, straight pants with curved pockets")
+        st.write("- Layer 2: a striped, single-breasted blazer jacket with a regular fit, normal waist, above-the-hip length, notched lapel, welt pockets, and set-in sleeves with wrist-length cuffs")
+        st.write("- Layer 3: a floral, tight-fitting blouse with a normal waist, single-breasted front, symmetrical design, a flap pocket, a shirt collar and wrist-length sleeves")
+
+    st.divider()
+    st.subheader(f"Experiment: EX3")
+
+    base_path = f"experiments/exp3"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp3 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp3 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+    with col3:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay2.png",
+            "LASSO regions 2"
+        )
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: loose, fly-front, maxi-length plain pants with a straight cut and symmetrical design")
+        st.write(
+            "- Region 2: a regular, floral, symmetrical, zip-up bomber jacket with no waistline, above-the-hip length, wrist-length set-in sleeves and a stand-away collar")
+        st.write(
+            "- Layer: a loose-fitting, classic-length, dotted t-shirt with a round neckline and no waistline")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: loose, fly-front, maxi-length plain pants with a straight cut and symmetrical design")
+        st.write(
+            "- Layer 2: a regular, floral, symmetrical, zip-up bomber jacket with no waistline, above-the-hip length, wrist-length set-in sleeves and a stand-away collar")
+        st.write(
+            "- Layer 3: a loose-fitting, classic-length, dotted t-shirt with a round neckline and no waistline")
+
+    st.divider()
+    st.subheader(f"Experiment: EX4")
+
+    base_path = f"experiments/exp4"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp4 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp4 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: a double-breasted, floral jacket with peak lapels, two flap pockets, two welt pockets, wrist-length set-in sleeves and a buckled opening")
+        st.write(
+            "- Layer: regular, maxi length, symmetrical and straight sailor pants with a fly opening and a striped pattern")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a double-breasted, floral jacket with peak lapels, two flap pockets, two welt pockets, wrist-length set-in sleeves and a buckled opening")
+        st.write(
+            "- Layer 2: regular, maxi length, symmetrical and straight sailor pants with a fly opening and a striped pattern")
+
+    st.divider()
+
+    st.subheader(f"Experiment: EX5")
+
+    base_path = f"experiments/exp5"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp5 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp5 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: a pair of tight, maxi, symmetrical leggings pants with a fly opening, a floral pattern, and a curved pocket")
+        st.write(
+            "- Layer: a loose, above-the-hip, plain sweatshirt with no waistline, a symmetrical design and two flap pockets")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a pair of tight, maxi, symmetrical leggings pants with a fly opening, a floral pattern, and a curved pocket")
+        st.write(
+            "- Layer 2: a loose, above-the-hip, plain sweatshirt with no waistline, a symmetrical design and two flap pockets")
+
+    st.divider()
+
+    st.subheader(f"Experiment: EX6")
+
+    base_path = f"experiments/exp6"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp6 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp6 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: A plain, regular fit, black collar, stars on it")
+        st.write(
+            "- Layer: a leather, single-breasted, welt pockets")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a leather, single-breasted, welt pockets")
+        st.write(
+            "- Layer 2: A plain, regular fit, black collar, stars on it")
+
+    st.divider()
+
+    st.subheader(f"Experiment: EX7")
+
+    base_path = f"experiments/exp7"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp7 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp7 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: a loose-fitting, cropped short-sleeve t-shirt with a round crew neckline, dropped shoulders")
+        st.write(
+            "- Layer: A pair of high-waisted, wide-leg pants with a relaxed fit, elastic waistband, and straight full-length legs")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a loose-fitting, cropped short-sleeve t-shirt with a round crew neckline, dropped shoulders")
+        st.write(
+            "- Layer 2: A pair of high-waisted, wide-leg pants with a relaxed fit, elastic waistband, and straight full-length legs")
+
+    st.divider()
+    st.divider()
+    st.subheader(f"Experiment: EX8")
+
+    base_path = f"experiments/exp8"
+
+    # ---------- Visual comparison ----------
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### LASSO-based result")
+        show_experiment_image(
+            f"{base_path}/lasso_result.png",
+            f"exp8 - LASSO result"
+        )
+
+    with col2:
+        st.markdown("### Layer-based result")
+        show_experiment_image(
+            f"{base_path}/layer_result.png",
+            f"exp8 - Layer result"
+        )
+
+    # ---------- Inputs ----------
+    st.markdown("### Inputs")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        show_experiment_image(
+            f"{base_path}/full_sketch.png",
+            "Full sketch"
+        )
+
+    with col2:
+        show_experiment_image(
+            f"{base_path}/lasso_overlay.png",
+            "LASSO regions"
+        )
+
+
+    # ---------- Descriptions (optional, can customize later) ----------
+    with st.expander("Descriptions (LASSO vs Layer)"):
+        st.markdown("**LASSO-based descriptions**")
+        st.write("- Region 1: V-shaped neckline")
+        st.write(
+            "- Layer: a relaxed-fit short-sleeve t-shirt, slightly dropped shoulders, and a softly curved hem")
+
+        st.markdown("**Layer-based descriptions**")
+        st.write("- Layer 1: a relaxed-fit short-sleeve t-shirt, slightly dropped shoulders, and a softly curved hem")
+        st.write(
+            "- Layer 2: V-shaped neckline")
+
+    st.divider()
+
+    st.subheader("Overall Observation")
+    st.markdown(
+        """
+        Across multiple experiments, the comparison highlights differences between
+        region-based and layer-based conditioning.
+
+        LASSO-based interaction enables fine-grained local control on a single sketch,
+        while layer-based interaction provides a more structured decomposition of the design.
+
+        These experiments provide a qualitative basis for evaluating controllability
+        and interaction design in the system.
+        """
+    )
+
+elif section == "Block Diagram":
+    st.header("System Block Diagram")
+
+    st.markdown(
+        """
+        This section summarizes the actual implemented workflow, from the user interaction in the frontend
+        to the final request sent to the LOTS server.
+
+        In the current system, the request does **not** go directly from the frontend to the AI engine.
+        Instead, the pipeline is:
+
+        **Frontend → Backend API → AI Engine → LOTS server**
+
+        Another important point is that **LASSO regions are not sent directly to LOTS as region objects**.
+        They are first processed inside the AI engine and converted into LOTS-compatible
+        **local sketch + local description pairs**.
+        """
+    )
+
+    st.subheader("Text Version of the Diagram")
+    st.code(
+        """User
+│
+├── Draws sketch on canvas or uploads sketch
+├── Adds global description
+├── Adds layer descriptions
+└── Optionally selects local regions with LASSO and adds region descriptions
+        ↓
+Frontend Platform
+│
+├── Manages canvas interaction
+├── Stores sketch image
+├── Stores layers
+└── Stores LASSO regions
+        ↓
+Backend API (/api/generate)
+│
+├── Receives frontend JSON request
+├── Validates request structure
+├── Checks canvas, layers, and lasso region consistency
+└── Forwards valid request to AI Engine
+        ↓
+Structured Request Sent to AI Engine
+│
+├── canvas
+├── global_prompt
+├── sketch_image
+├── reference_image
+├── layers[]
+│   ├── id
+│   ├── name
+│   ├── description
+│   └── image_data
+└── lasso_regions[]
+    ├── id
+    ├── layer_id
+    ├── description
+    ├── points
+    └── mask
+        ↓
+AI Engine
+│
+├── validates payload again
+├── normalizes request fields
+├── saves debug artifacts
+├── loads full sketch image
+├── loads layer images
+├── for each valid layer:
+│   └── creates one local sketch + one local description
+├── for each LASSO region:
+│   ├── uses region mask or polygon points
+│   ├── extracts a local sketch crop from the source image
+│   └── pairs it with the region description
+└── converts everything into LOTS-compatible payload format
+        ↓
+Payload Sent to LOTS Server
+│
+├── global_description
+├── local_description[]
+└── sketch[]
+        ↓
+LOTS Server / LOTS Model
+│
+├── receives one global description
+├── receives multiple local descriptions
+└── receives multiple local sketch images
+        ↓
+Generated Output
+│
+├── generated image returned by LOTS
+├── debug files saved by AI Engine
+├── masks and local sketches saved
+└── experiment bundle saved for qualitative comparison""",
+        language="text"
+    )
+
+    st.subheader("Actual Request Format Received by the Backend API")
+    st.code(
+        """{
+  "canvas": {
+    "width": 1024,
+    "height": 1024
+  },
+  "global_prompt": "overall design description",
+  "sketch_image": "base64_full_sketch",
+  "reference_image": "optional_base64_reference",
+  "layers": [
+    {
+      "id": 1,
+      "name": "shirt",
+      "description": "layer-level description",
+      "image_data": "optional_base64_layer_image"
+    }
+  ],
+  "lasso_regions": [
+    {
+      "id": "region_1",
+      "layer_id": 1,
+      "description": "region-level description",
+      "points": [x1, y1, x2, y2, x3, y3],
+      "mask": "optional_base64_mask"
+    }
+  ]
+}""",
+        language="json"
+    )
+
+    st.subheader("Actual Payload Sent by the AI Engine to the LOTS Server")
+    st.code(
+        """{
+  "global_description": "overall design description",
+  "local_description": [
+    "layer-level description 1",
+    "layer-level description 2",
+    "region-level description 1",
+    "region-level description 2"
+  ],
+  "sketch": [
+    "base64_layer_image_1",
+    "base64_layer_image_2",
+    "base64_region_crop_1",
+    "base64_region_crop_2"
+  ]
+}""",
+        language="json"
+    )
+
+    st.subheader("Important Clarification")
+    st.info(
+        """
+        In the current implementation, the backend API forwards the structured request to the AI engine,
+        and the AI engine performs the main preprocessing step.
+
+        This means:
+        - the frontend sends **layers** and **lasso_regions** to the backend,
+        - the backend forwards them to the AI engine,
+        - the AI engine converts them into LOTS-compatible inputs,
+        - and the LOTS server receives only:
+          **one global description, a list of local descriptions, and a list of local sketch images**.
+        """
+    )
+
+    st.subheader("Input / Output Example")
+    in_col, out_col = st.columns(2)
+
+    with in_col:
+        st.markdown("### Inputs to the overall system")
+        st.markdown(
+            """
+            - Full sketch or uploaded sketch
+            - Global description
+            - Layer descriptions
+            - Optional layer images
+            - LASSO-selected regions
+            - Region-level local descriptions
+            """
+        )
+
+    with out_col:
+        st.markdown("### Outputs from the overall system")
+        st.markdown(
+            """
+            - Generated fashion image
+            - Saved debug request files
+            - Saved masks
+            - Saved local sketch crops
+            - Saved experiment bundle for comparison
+            """
+        )
+
+    st.subheader("Why this diagram matters")
+    st.markdown(
+        """
+        This updated diagram reflects the implemented architecture more accurately.
+
+        In particular, it clarifies:
+        - that the backend API is an explicit stage between the frontend and AI engine,
+        - that request validation happens before AI-engine processing,
+        - that LASSO regions are used for preprocessing rather than being sent directly to LOTS,
+        - and that the AI engine acts as the conversion layer between the interactive platform and the LOTS server.
         """
     )
 
