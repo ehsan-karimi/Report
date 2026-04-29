@@ -515,12 +515,12 @@ elif section == "Experiments":
     base_path = f"experiments/exp1"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
         show_experiment_image(
-            f"{base_path}/lasso_result.png",
+            f"{base_path}/generated_result_lots.png",
             f"exp1 - LASSO result"
         )
 
@@ -529,6 +529,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp1 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -565,12 +572,12 @@ elif section == "Experiments":
     base_path = f"experiments/exp2"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
         show_experiment_image(
-            f"{base_path}/lasso_result.png",
+            f"{base_path}/generated_result_lots.png",
             f"exp2 - LASSO result"
         )
 
@@ -579,6 +586,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp2 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -622,12 +636,12 @@ elif section == "Experiments":
     base_path = f"experiments/exp3"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
         show_experiment_image(
-            f"{base_path}/lasso_result.png",
+            f"{base_path}/generated_result_lots.png",
             f"exp3 - LASSO result"
         )
 
@@ -636,6 +650,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp3 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -683,12 +704,12 @@ elif section == "Experiments":
     base_path = f"experiments/exp4"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
         show_experiment_image(
-            f"{base_path}/lasso_result.png",
+            f"{base_path}/generated_result_lots.png",
             f"exp4 - LASSO result"
         )
 
@@ -697,6 +718,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp4 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -736,12 +764,12 @@ elif section == "Experiments":
     base_path = f"experiments/exp5"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
         show_experiment_image(
-            f"{base_path}/lasso_result.png",
+            f"{base_path}/generated_result_lots.png",
             f"exp5 - LASSO result"
         )
 
@@ -750,6 +778,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp5 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -789,7 +824,7 @@ elif section == "Experiments":
     base_path = f"experiments/exp6"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
@@ -803,6 +838,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp6 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -842,7 +884,7 @@ elif section == "Experiments":
     base_path = f"experiments/exp7"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
@@ -856,6 +898,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp7 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
@@ -895,7 +944,7 @@ elif section == "Experiments":
     base_path = f"experiments/exp8"
 
     # ---------- Visual comparison ----------
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### LASSO-based result")
@@ -909,6 +958,13 @@ elif section == "Experiments":
         show_experiment_image(
             f"{base_path}/layer_result.png",
             f"exp8 - Layer result"
+        )
+
+    with col3:
+        st.markdown("### Flux + Lasso result")
+        show_experiment_image(
+            f"{base_path}/flux_result.png",
+            f"exp1 - Flux + Lasso result"
         )
 
     # ---------- Inputs ----------
